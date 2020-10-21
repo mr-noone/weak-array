@@ -39,6 +39,10 @@ public extension WeakArray {
   mutating func append(_ newElement: Element) {
     elements.append(WeakWrapper(newElement))
   }
+  
+  mutating func compact() {
+    elements.removeAll { $0.value == nil }
+  }
 }
 
 // MARK: - ExpressibleByArrayLiteral
@@ -60,7 +64,8 @@ extension WeakArray: Collection {
   public var startIndex: Index { elements.startIndex }
   public var endIndex: Index { elements.endIndex }
   
-  public var first: Element { elements.first?.value }
+  public var first: Element { elements.first { $0.value != nil }?.value }
+  public var last: Element { elements.last { $0.value != nil }?.value }
   
   public subscript(index: Index) -> Element {
     get { elements[index].value }
