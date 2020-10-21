@@ -39,6 +39,10 @@ public extension WeakArray {
   mutating func append(_ newElement: Element) {
     elements.append(WeakWrapper(newElement))
   }
+  
+  mutating func compact() {
+    elements.removeAll { $0.value == nil }
+  }
 }
 
 // MARK: - ExpressibleByArrayLiteral
